@@ -1,9 +1,9 @@
 
 # MongoDB
 
-**Author**: @FarahZaqout
+**Author**: [@FarahZaqout](https://github.com/FarahZaqout)
 
-**Maintainer**: @aaamra, @LinaYahya 
+**Maintainer**: [@aaamra](https://github.com/aaamra), [@LinaYahya](https://github.com/LinaYahya) 
 
 ## Table of Contents
 - [What is MongoDB](#What-is-MongoDB)
@@ -71,7 +71,7 @@ Let's say we want to create a `users` collection (like a users table). All we ne
 * Make sure we are on the mongo-test database by writing `db` in the mongo shell. This command will tell you which database you are using right now.
 * To create a users collection, we simply insert a new user. `db.users.insertOne({ name: 'Farah'})`
 * the result of this query should be similar to this:
-```javascript=
+```javascript
 {
 	"acknowledged" : true,
 	"insertedId" : ObjectId("5ea6aeaa93dd6c5d89e44ba3")
@@ -122,7 +122,7 @@ In our case, let's delete the `farah` document.
 In order to delete many documents, we use the command `db.collectionName.deleteMany()`. This command allows us to delete all of the documents in a collection, or to delete a set of documents based on a filter we give it. Let's try it out with an example from the docs.
 
 * create an inventory collection and populate it with data.
-```javascript=
+```javascript
 db.inventory.insertMany( [
    { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
    { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
@@ -133,7 +133,7 @@ db.inventory.insertMany( [
 ```
 
 * It should output the following object: 
-```javascript=
+```javascript
 {
 	"acknowledged" : true,
 	"insertedIds" : [
@@ -154,7 +154,7 @@ This command should output: `{ "acknowledged" : true, "deletedCount" : 5 }`. Whi
 
 But what if we want to delete one only. Or a few but not all. Let's populate the collection with a new set of data.
 
-```javascript=
+```javascript
 db.inventory.insertMany( [
    { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
    { item: "notebook", qty: 25, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
@@ -185,7 +185,7 @@ To play around further with MongoDB, [this](https://docs.mongodb.com/manual/crud
 
 ## Mongoose
 Let's face it, writing MongoDB validation, casting and business logic boilerplate is a drag. That's why we wrote Mongoose.
-```javascript=
+```javascript
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/test');
 
@@ -222,7 +222,7 @@ First, let's make sure we are connected to the mongodb server.
 * in our `.env` file add the connection link:
 >`DB_URL=mongodb://localhost:27017/mongo-walkthrough`
 * in `connection.js` let's set up our mongodb connection:
-```javascript=
+```javascript
 require('env2')('.env');
 const mongoose = require('mongoose');
 
@@ -245,7 +245,7 @@ A Mongoose model is a wrapper on the Mongoose schema. A Mongoose schema defines 
 
 In the models directory, create a `User.js` file.
 
-```javascript=
+```javascript
 // User.js
 const { Schema, model } = require('mongoose');
 
@@ -271,7 +271,7 @@ Now that we have a model, let's write our first set of queries for that model.
 
 in the `queries` directory, create a `users.js` file.
 
-```javascript=
+```javascript
 // queries/users.js
 const User = require('../models/User');
 
@@ -301,7 +301,7 @@ Now we are ready to test if our database is set up properly or not. Take a look 
 
 In the `test` directory, create a file `users.test.js`
 
-```javascript=
+```javascript
 // users.test.js
 const connection = require('../database/connection');
 const { createUser } = require('../database/queries/users');
@@ -332,7 +332,7 @@ This means the validation passed, but that is not how we want it to behave. If d
 
 The reason why invalid data was ignored is that the keys on a document are not `required` by default. Let's make the firstName required.
 
-```javascript=
+```javascript
 //database/models/User.js
 const userSchema = new Schema({
 	firstName: { type: 'string', required: true },
@@ -350,7 +350,7 @@ Note: the `unique` validator in mongoose is not smart. If we already have duplic
 
 Add a unique property to the name field and update our test to create the same user twice.
 
-```javascript=
+```javascript
 // users.test.js
 const connection = require('../database/connection');
 const { createUser, deleteAll } = require('../database/queries/users');
@@ -391,7 +391,7 @@ Hint: you can pass a `filter` object to the `find` method.
 Since mongoose is a schema based tool, we can do something similar to `join` in SQL. It's called `populate`. To use it, we need to define our `ref` (foreign key) in the schema, then we can use the `populate` method in our queries.
 
 Let's create a `Posts` schema.
-```javascript=
+```javascript
 // models/Post.js
 const { Schema, model } = require('mongoose');
 
@@ -412,7 +412,7 @@ In the code above, we are telling the Schema that it will have a `content` field
 
 Now let's write the `posts` queries. In the `queries` directory, create a file `posts.js`
 
-```javascript=
+```javascript
 // queries/posts.js
 const Post = require('../models/Post');
 
@@ -437,7 +437,7 @@ module.exports = {
 ```
 Notice how the `createPost` query is no different from the `createUser`. The `author` here will be the id of a user. Lets test if this will work. Create a `posts.test.js` file.
 
-```javascript=
+```javascript
 // posts.test.js
 const connection = require('../database/connection');
 const { deleteAllPosts, createPost } = require('../database/queries/posts');
